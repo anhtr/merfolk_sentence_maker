@@ -16,9 +16,9 @@
             margin: 5px;
         }
         #wordButtons {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust the size as needed */
-        gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust the size as needed */
+            gap: 10px;
         }
         @media (max-width: 600px) {
             .word-button {
@@ -26,15 +26,32 @@
                 padding: 10px; /* Adjust the padding as needed */
             }
         }
+        .buttons-container {
+            width: 100%; /* Add this line */
+        }
         body {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }
         .centered-content {
             text-align: center;
+            overflow: auto;
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+            padding-bottom: 50px;
+            max-width: 90%; /* Add this line */
+            margin: 0 auto; /* Add this line */
+        }
+        .centered-content::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari and Opera */
+        }
+        .output-container {
+            max-width: 100%; /* Add this line */
+        }
+        #textOutput {
+            word-wrap: break-word;
         }
     </style>
 </head>
@@ -46,24 +63,32 @@
         <button id="updateWordsButton">Add Words</button>
         <button id="sortWordsButton">Sort Words</button>
         </br></br></br>
-        <h2>Click on a word to add it to your sentence:</h2>
-        <div id="wordButtons"></div>
+        <div class="buttons-container"> <!-- Add this line -->
+            <h2>Click on a word to add it to your sentence:</h2>
+            <div id="wordButtons"></div>
+        </div>
         </br></br></br>
         <h2>And/or type your sentence below:</h2>
         <textarea id="textInput" rows="10" cols="50"></textarea>
         </br></br></br>
-        <h2>Your Merfolk sentence:</h2>
-        <p><i>Unacceptable words are highlighted in red</i></p>
-        <div id="textOutput"></div>
+        <div class="output-container">
+            <h2>Your Merfolk sentence:</h2>
+            <p><i>Unacceptable words are highlighted in red</i></p>
+            <div id="textOutput"></div>
+        </div>
     </div>
 
     <script>
-        // Get the word input, text input, output and wordButtons elements
-        const wordInput = document.getElementById("wordInput");
-        const textInput = document.getElementById("textInput");
-        const textOutput = document.getElementById("textOutput");
-        const wordButtons = document.getElementById("wordButtons");
-        const updateWordsButton = document.getElementById("updateWordsButton");
+    // Get the word input, text input, output and wordButtons elements
+    const wordInput = document.getElementById("wordInput");
+    const textInput = document.getElementById("textInput");
+    const textOutput = document.getElementById("textOutput");
+    const wordButtons = document.getElementById("wordButtons");
+
+    // Set the width of the textOutput to match the width of the wordButtons
+    window.onload = function() {
+        textOutput.style.width = window.getComputedStyle(wordButtons).width;
+    };
 
         let predefinedWords = ["yes", "no", "not", "he", "him", "she", "her", "we", "us", "his", "hers", "ours", "mine", "yours", "valuables", "leader", "bullywug", "enemy", "give", "take", "fight", "raid", "ambush", "kill", "crocodile", "humanoid", "lizardfolk", "king", "gang", "stop", "don't", "tribute", "insect", "swamp", "home", "stay", "not", "and", "if", "go"];
 
@@ -79,7 +104,7 @@
             predefinedWords.forEach((word, index) => {
                 const wordButton = document.createElement("button");
                 wordButton.className = "word-button";
-                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">🞨</span>`;
+                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">&#128936;</span>`;
                 wordButton.addEventListener("click", (event) => {
                     if (event.target.classList.contains("remove-icon")) {
                         predefinedWords.splice(index, 1);
