@@ -16,9 +16,15 @@
             margin: 5px;
         }
         #wordButtons {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust the size as needed */
+        gap: 10px;
+        }
+        @media (max-width: 600px) {
+            .word-button {
+                font-size: 14px; /* Adjust the size as needed */
+                padding: 10px; /* Adjust the padding as needed */
+            }
         }
         body {
             display: flex;
