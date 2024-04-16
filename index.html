@@ -14,11 +14,13 @@
             justify-content: space-between;
             padding: 5px 10px;
             margin: 5px;
+            overflow-wrap: break-word;
+            word-break: break-all;
         }
         #wordButtons {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust the size as needed */
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Adjust the size as needed */
+            padding: 10px;
         }
         @media (max-width: 600px) {
             .word-button {
