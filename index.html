@@ -104,7 +104,7 @@
             predefinedWords.forEach((word, index) => {
                 const wordButton = document.createElement("button");
                 wordButton.className = "word-button";
-                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">❌</span>`;
+                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">&#10005;</span>`;
                 wordButton.addEventListener("click", (event) => {
                     if (event.target.classList.contains("remove-icon")) {
                         predefinedWords.splice(index, 1);
