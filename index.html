@@ -73,6 +73,8 @@
         </br>
         <p><i>And/or type your sentence in this text box</i></p>
         <textarea id="textInput" rows="10" cols="50"></textarea>
+        </br>
+        <button id="clearTextInputButton">Clear Text Input</button>
         </br></br></br>
         <div class="output-container">
             <h2>Here's your Merfolk sentence</h2>
@@ -87,6 +89,7 @@
     const textInput = document.getElementById("textInput");
     const textOutput = document.getElementById("textOutput");
     const wordButtons = document.getElementById("wordButtons");
+    const clearTextInputButton = document.getElementById("clearTextInputButton");
 
     // Function to set the width of the textOutput to match the width of the wordButtons
     function setOutputWidth() {
@@ -99,76 +102,83 @@
     // Update the width of the textOutput to match the width of the wordButtons when the window is resized
     window.onresize = setOutputWidth;
 
-        let predefinedWords = ["yes", "no", "not", "he", "him", "she", "her", "we", "us", "his", "hers", "ours", "mine", "yours", "valuables", "leader", "bullywug", "enemy", "give", "take", "fight", "raid", "ambush", "kill", "crocodile", "humanoid", "lizardfolk", "king", "gang", "stop", "don't", "tribute", "insect", "swamp", "home", "stay", "not", "and", "if", "go"];
+    let predefinedWords = ["yes", "no", "not", "he", "him", "she", "her", "we", "us", "his", "hers", "ours", "mine", "yours", "valuables", "leader", "bullywug", "enemy", "give", "take", "fight", "raid", "ambush", "kill", "crocodile", "humanoid", "lizardfolk", "king", "gang", "stop", "don't", "tribute", "insect", "swamp", "home", "stay", "not", "and", "if", "go"];
 
-        // Function to add word to textInput
-        function addWordToInput(word) {
-            textInput.value += " " + word;
-            highlightWrongWords();
-        }
+    // Function to add word to textInput
+    function addWordToInput(word) {
+        textInput.value += " " + word;
+        highlightWrongWords();
+    }
 
-        // Function to create word buttons
-        function createWordButtons() {
-            wordButtons.innerHTML = "";
-            predefinedWords.forEach((word, index) => {
-                const wordButton = document.createElement("button");
-                wordButton.className = "word-button";
-                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">&#10005;</span>`;
-                wordButton.addEventListener("click", (event) => {
-                    if (event.target.classList.contains("remove-icon")) {
-                        predefinedWords.splice(index, 1);
-                        createWordButtons();
-                    } else {
-                        addWordToInput(word);
-                    }
-                });
-                wordButtons.appendChild(wordButton);
-            });
-        }
-
-        // Function to update predefined words
-        function updatePredefinedWords() {
-            const newWords = wordInput.value.split(",").map(word => word.trim().toLowerCase());
-            newWords.forEach(word => {
-                if (!predefinedWords.map(word => word.toLowerCase()).includes(word)) {
-                    predefinedWords.push(word);
-                }
-            });
-            createWordButtons();
-        }
-
-        // Add event listener for update words button click
-        updateWordsButton.addEventListener("click", updatePredefinedWords);
-
-        // Function to highlight wrong words
-        function highlightWrongWords() {
-            const text = textInput.value;
-            const words = text.split(/\s+/);
-            const highlightedText = words.map(word => {
-                if (!predefinedWords.includes(word.toLowerCase())) {
-                    return `<span class="highlight">${word}</span>`;
+    // Function to create word buttons
+    function createWordButtons() {
+        wordButtons.innerHTML = "";
+        predefinedWords.forEach((word, index) => {
+            const wordButton = document.createElement("button");
+            wordButton.className = "word-button";
+            wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">&#10005;</span>`;
+            wordButton.addEventListener("click", (event) => {
+                if (event.target.classList.contains("remove-icon")) {
+                    predefinedWords.splice(index, 1);
+                    createWordButtons();
                 } else {
-                    return word;
+                    addWordToInput(word);
                 }
-            }).join(" ");
-            textOutput.innerHTML = highlightedText;
-        }
+            });
+            wordButtons.appendChild(wordButton);
+        });
+        highlightWrongWords();
+    }
 
-        // Add event listener for input change
-        textInput.addEventListener("input", highlightWrongWords);
-
-        // Function to sort predefined words
-        function sortPredefinedWords() {
-            predefinedWords.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-            createWordButtons();
-        }
-
-        // Event listener for the sort words button
-        document.getElementById("sortWordsButton").addEventListener("click", sortPredefinedWords);
-
-
-        // Call createWordButtons to create buttons for default words
+    // Function to update predefined words
+    function updatePredefinedWords() {
+        const newWords = wordInput.value.split(",").map(word => word.trim().toLowerCase());
+        newWords.forEach(word => {
+            if (!predefinedWords.map(word => word.toLowerCase()).includes(word)) {
+                predefinedWords.push(word);
+            }
+        });
         createWordButtons();
+    }
+
+    // Add event listener for update words button click
+    updateWordsButton.addEventListener("click", updatePredefinedWords);
+
+    // Function to highlight wrong words
+    function highlightWrongWords() {
+        const text = textInput.value;
+        const words = text.split(/\s+/);
+        const highlightedText = words.map(word => {
+            if (!predefinedWords.includes(word.toLowerCase())) {
+                return `<span class="highlight">${word}</span>`;
+            } else {
+                return word;
+            }
+        }).join(" ");
+        textOutput.innerHTML = highlightedText;
+    }
+
+    // Add event listener for input change
+    textInput.addEventListener("input", highlightWrongWords);
+
+    // Function to sort predefined words
+    function sortPredefinedWords() {
+        predefinedWords.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+        createWordButtons();
+    }
+
+    // Event listener for the sort words button
+    document.getElementById("sortWordsButton").addEventListener("click", sortPredefinedWords);
+
+    // Add an event listener to the clear text input button
+    clearTextInputButton.addEventListener("click", function() {
+        textInput.value = "";
+        highlightWrongWords();
+    });
+
+
+    // Call createWordButtons to create buttons for default words
+    createWordButtons();
     </script>
 </body>
 </html>
