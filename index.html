@@ -10,16 +10,13 @@
             color: rgb(14, 14, 14);
         }
         .word-button {
-            display: inline-flex;
-            justify-content: space-between;
             padding: 5px 10px;
             margin: 5px;
             overflow-wrap: break-word;
             word-break: break-all;
+            display: inline-block;
         }
         #wordButtons {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); /* Adjust the size as needed */
             padding: 10px;
         }
         @media (max-width: 600px) {
@@ -60,22 +57,26 @@
 <body>
     <div class ="centered-content">
         <h1>Merfolk Sentence Maker Pro Plus™</h1>
+        <p><b>Craft your sentence from pre-defined words</b></p>
         </br>
-        <input id="wordInput" type="text" placeholder="Enter words, comma-separated">
+        <h2>Define your word list</h2>
+        <p><i>New words will be added to the list shown below</i></p>
+        <input id="wordInput" type="text" placeholder="Comma-separated words">
         <button id="updateWordsButton">Add Words</button>
         <button id="sortWordsButton">Sort Words</button>
         </br></br></br>
         <div class="buttons-container">
-            <h2>Click on a word to add it to your sentence:</h2>
+            <h2>Make your sentence</h2>
+            <p><i>Click on a word in the word list to add it to your sentence</i></p>
             <div id="wordButtons"></div>
         </div>
-        </br></br></br>
-        <h2>And/or type your sentence below:</h2>
+        </br>
+        <p><i>And/or type your sentence in this text box</i></p>
         <textarea id="textInput" rows="10" cols="50"></textarea>
         </br></br></br>
         <div class="output-container">
-            <h2>Your Merfolk sentence:</h2>
-            <p><i>Unacceptable words are highlighted in red</i></p>
+            <h2>Here's your Merfolk sentence</h2>
+            <p><i>(Unacceptable words are <span class="highlight">highlighted</span>)</i></p>
             <div id="textOutput"></div>
         </div>
     </div>
@@ -87,10 +88,16 @@
     const textOutput = document.getElementById("textOutput");
     const wordButtons = document.getElementById("wordButtons");
 
-    // Set the width of the textOutput to match the width of the wordButtons
-    window.onload = function() {
+    // Function to set the width of the textOutput to match the width of the wordButtons
+    function setOutputWidth() {
         textOutput.style.width = window.getComputedStyle(wordButtons).width;
-    };
+    }
+
+    // Set the width of the textOutput to match the width of the wordButtons on page load
+    window.onload = setOutputWidth;
+
+    // Update the width of the textOutput to match the width of the wordButtons when the window is resized
+    window.onresize = setOutputWidth;
 
         let predefinedWords = ["yes", "no", "not", "he", "him", "she", "her", "we", "us", "his", "hers", "ours", "mine", "yours", "valuables", "leader", "bullywug", "enemy", "give", "take", "fight", "raid", "ambush", "kill", "crocodile", "humanoid", "lizardfolk", "king", "gang", "stop", "don't", "tribute", "insect", "swamp", "home", "stay", "not", "and", "if", "go"];
 
