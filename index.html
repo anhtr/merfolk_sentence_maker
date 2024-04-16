@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Highlighter</title>
+    <style>
+        .highlight {
+            background-color: red;
+            color: white;
+        }
+        .word-button {
+            display: inline-flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            margin: 5px;
+        }
+        #wordButtons {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .centered-content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class ="centered-content">
+        <h1>Merfolk Sentence Maker Pro Plus™</h1>
+        </br>
+        <input id="wordInput" type="text" placeholder="Enter words, comma-separated">
+        <button id="updateWordsButton">Add Words</button>
+        <button id="sortWordsButton">Sort Words</button>
+        </br></br></br>
+        <h2>Click on a word to add it to your sentence:</h2>
+        <div id="wordButtons"></div>
+        </br></br></br>
+        <h2>And/or type your sentence below:</h2>
+        <textarea id="textInput" rows="10" cols="50"></textarea>
+        </br></br></br>
+        <h2>Your Merfolk sentence:</h2>
+        <div id="textOutput"></div>
+    </div>
+
+    <script>
+        // Get the word input, text input, output and wordButtons elements
+        const wordInput = document.getElementById("wordInput");
+        const textInput = document.getElementById("textInput");
+        const textOutput = document.getElementById("textOutput");
+        const wordButtons = document.getElementById("wordButtons");
+        const updateWordsButton = document.getElementById("updateWordsButton");
+
+        let predefinedWords = ["yes", "no", "not", "he", "him", "she", "her", "we", "us", "his", "hers", "ours", "mine", "yours", "valuables", "leader", "bullywug", "enemy", "give", "take", "fight", "raid", "ambush", "kill", "crocodile", "humanoid", "lizardfolk", "king", "gang", "stop", "don't", "tribute", "insect", "swamp", "home", "stay", "not", "and", "if", "go"];
+
+        // Function to add word to textInput
+        function addWordToInput(word) {
+            textInput.value += " " + word;
+            highlightWrongWords();
+        }
+
+        // Function to create word buttons
+        function createWordButtons() {
+            wordButtons.innerHTML = "";
+            predefinedWords.forEach((word, index) => {
+                const wordButton = document.createElement("button");
+                wordButton.className = "word-button";
+                wordButton.innerHTML = `<span>${word}</span> <span class="remove-icon">🞨</span>`;
+                wordButton.addEventListener("click", (event) => {
+                    if (event.target.classList.contains("remove-icon")) {
+                        predefinedWords.splice(index, 1);
+                        createWordButtons();
+                    } else {
+                        addWordToInput(word);
+                    }
+                });
+                wordButtons.appendChild(wordButton);
+            });
+        }
+
+        // Function to update predefined words
+        function updatePredefinedWords() {
+            const newWords = wordInput.value.split(",").map(word => word.trim().toLowerCase());
+            newWords.forEach(word => {
+                if (!predefinedWords.map(word => word.toLowerCase()).includes(word)) {
+                    predefinedWords.push(word);
+                }
+            });
+            createWordButtons();
+        }
+
+        // Add event listener for update words button click
+        updateWordsButton.addEventListener("click", updatePredefinedWords);
+
+        // Function to highlight wrong words
+        function highlightWrongWords() {
+            const text = textInput.value;
+            const words = text.split(/\s+/);
+            const highlightedText = words.map(word => {
+                if (!predefinedWords.includes(word.toLowerCase())) {
+                    return `<span class="highlight">${word}</span>`;
+                } else {
+                    return word;
+                }
+            }).join(" ");
+            textOutput.innerHTML = highlightedText;
+        }
+
+        // Add event listener for input change
+        textInput.addEventListener("input", highlightWrongWords);
+
+        // Function to sort predefined words
+        function sortPredefinedWords() {
+            predefinedWords.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+            createWordButtons();
+        }
+
+        // Event listener for the sort words button
+        document.getElementById("sortWordsButton").addEventListener("click", sortPredefinedWords);
+
+
+        // Call createWordButtons to create buttons for default words
+        createWordButtons();
+    </script>
+</body>
+</html>
