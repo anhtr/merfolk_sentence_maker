@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
     <title>Merfolk Sentence Maker</title>
     <style>
         .highlight {
@@ -56,17 +57,17 @@
 </head>
 <body>
     <div class ="centered-content">
-        <h1>Merfolk Sentence Maker Pro Plus™</h1>
-        <p><b>Craft your sentence from pre-defined words</b></p>
-        </br>
-        <h2>Define your word list</h2>
+        <h2>Merfolk Sentence Maker Pro Plus™</h2>
+        <p><strong>Craft your sentence from pre-defined words</strong></p>
+        <hr style="margin: 0 100px;">
+        <h3>Define your word list</h3>
         <p><i>New words will be added to the list shown below</i></p>
         <input id="wordInput" type="text" placeholder="Comma-separated words">
         <button id="updateWordsButton">Add Words</button>
         <button id="sortWordsButton">Sort Words</button>
-        </br></br></br>
+        </br>
         <div class="buttons-container">
-            <h2>Make your sentence</h2>
+            <h3>Make your sentence</h3>
             <p><i>Click on a word in the word list to add it to your sentence</i></p>
             <div id="wordButtons"></div>
         </div>
@@ -75,9 +76,9 @@
         <textarea id="textInput" rows="10" cols="50"></textarea>
         </br>
         <button id="clearTextInputButton">Clear Text Input</button>
-        </br></br></br>
+        </br>
         <div class="output-container">
-            <h2>Here's your Merfolk sentence</h2>
+            <h3>Here's your Merfolk sentence</h3>
             <p><i>(Unacceptable words are <span class="highlight">highlighted</span>)</i></p>
             <div id="textOutput"></div>
         </div>
@@ -106,7 +107,11 @@
 
     // Function to add word to textInput
     function addWordToInput(word) {
-        textInput.value += " " + word;
+        if (textInput.value === "") {
+            textInput.value += word;
+        } else {
+            textInput.value += " " + word;
+        }
         highlightWrongWords();
     }
 
